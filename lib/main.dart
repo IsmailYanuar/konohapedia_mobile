@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:konohapedia_mobile/menu.dart';
+import 'package:konohapedia_mobile/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey,).copyWith(secondary: Colors.blueGrey[900]),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey,).copyWith(primary: Colors.blueGrey[900], secondary: Colors.blueGrey),
         useMaterial3: true,
       ),
       home: MyHomePage(),
