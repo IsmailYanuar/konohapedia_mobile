@@ -40,7 +40,7 @@ Jawab:
 ### 3. Apa Fungsi dari setState()? Jelaskan Variabel Apa Saja yang Terpengaruh oleh Fungsi Ini.
 ```
 Jawab:
-setState berfungsi untuk mengupdate tampilan baru dari variabel ketika variabel tersebut mengalami perubahan. Variabel yang bisa berubah adalah variabel yang berada dalam State dan akan menyebabkan render ulang pada UI jika dipanggil dengan setState().
+    setState berfungsi untuk mengupdate tampilan baru dari variabel ketika variabel tersebut mengalami perubahan. Variabel yang bisa berubah adalah variabel yang berada dalam State dan akan menyebabkan render ulang pada UI jika dipanggil dengan setState().
 ```
 
 ### 4. Jelaskan Perbedaan antara const dengan final.
@@ -201,14 +201,173 @@ Langkah 5: Mengintegrasikan InfoCard dan ItemCard di MyHomePage
     Jawab:
         - menggunakan navigator push/pop untuk membukan dan menutup suatu halaman
         - menggunakan Push Replacement untuk menghapus route yang sedang ditampilkan kepada pengguna dan menggantinya dengan suatu route
+    ```
 
 
 
+# Tugas 9
+
+### 1. Jelaskan mengapa kita perlu membuat model untuk melakukan pengambilan ataupun pengiriman data JSON? Apakah akan terjadi error jika kita tidak membuat model terlebih dahulu?
+    ```
+    Jawab:
+        Jika menggunakan model untuk pengambilan data JSON
+            Type safety dan validasi data:
+            - Model membantu memastikan tipe data yang diterima/dikirim sesuai sama yang diinginkan
+            - Mencegah runtime errors karena tipe data yang nggak sama, misal di model ada name dengan tipe data String tetapi pada flutter tipe datanya int maka akan terjadi error
+            - Menjadi lebih mudah untuk memvalidasi data sebelum diproses
+
+            Kemudahan Maintenance:
+            - Kode lebih terstruktur dan mudah dibaca
+            - Perubahan struktur data dapat dilakukan terpusat di model
+            - Memudahkan debugging ketika terjadi masalah
 
         
+        Jika tidak membuat model terlebih dahulu
+            - Runtiime errors kalau struktur JSON tidak sesuai ekspektasi
+            - Kode menjadi lebih rentan terhadap bugs
+            - Sulit untuk melakukan maintenance jika struktur data berubah
+            - Tidak ada autocomplete dari IDE
+    ```
+
+### 2. Jelaskan fungsi dari library http yang sudah kamu implementasikan pada tugas ini
+    ```
+    Jawab:
+        - Mengirim dan menerima data dari server 
+        - Mengatur proses login dan logout 
+        - Menjaga keamanan data
+        - Memberikan notifikasi jika ada masalah koneksi 
+        - Mengatur proses upload dan download file 
+    ```
 
 
+### 3.Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+    ```
+    Jawab:
+        Fungsi CookieRequest:
+        - Menyimpan status login pengguna 
+        - Mengatur sesi (session) aplikasi
+        - Menjaga keamanan data pengguna
+        - Mengelola request ke server dengan cookie yang valid
+
+        Biar Data Kompak:
+        - Status login ga ada yang beda-beda, semua halaman sama
+        - Ga bakal tau ke-logout pas lagi run di aplikasi
+        Biar Gampang:
+        - Ga usah ribet login berkali-kali
+        - Hemat tempat karena pakenya barang yang sama
+        Biar Aman! 
+        - Semua urusan login diatur di satu tempat
+        - Gampang ngawasin siapa aja yang boleh akses
+    ```
+
+### 4. Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.
+    ```
+    Jawab:
+        Input Data:
+        - User masukin data lewat form/textfield
+        - Data ditangkep dan disimpan dulu di variabel
+        Proses Kirim:
+        - Data dikirim ke server pake HTTP request
+        - Biasanya lewat method POST
+        Server Terima:
+        - Server proses data yang dikirim
+        - Simpan ke database kalau perlu
+        - Kirim balik response ke aplikasi
+        Aplikasi Terima Response:
+        - Cek response berhasil apa gagal
+        - Kalau oke, update tampilan
+        Tampilin Data:
+        - Data yang udah diproses ditampilin ke user
+    ```
 
 
+### Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+    ```
+    Jawab:
+        Login:
+        ```
+            final response = await request
+            .login("http://127.0.0.1:8000/auth/login/", {
+                'username': username,
+                'password': password,
+            });
+        ```
 
         
+        - User masukin username & password
+        - Django cek credentials
+        - Kalau cocok, bikin session
+        - Flutter simpan cookie
+        - User masuk ke home page
+
+        Register:
+        ```
+            final response = await request.postJson(
+            "http://127.0.0.1:8000/auth/register/",
+            jsonEncode({
+            "username": username,
+            "password1": password1,
+            "password2": password2,
+            }));
+        ```
+
+        logout:
+        ```
+            else if (item.name == "Logout") {
+              final response = await request.logout(
+                  // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                  "http://127.0.0.1:8000/auth/logout/");
+              String message = response["message"];
+              if (context.mounted) {
+                  if (response['status']) {
+                      String uname = response["username"];
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("$message Sampai jumpa, $uname."),
+                      ));
+                  }
+              }
+            }
+        ```
+    ```
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+    ```
+    Jawab:
+        1. Membuat Model Kustom
+            - Buat endpoint JSON di Django
+            - Gunakan Quicktype untuk konversi JSON ke model Flutter
+            - Buat folder models/ dan file model Dart baru
+            - Tempel dan sesuaikan kode model dari Quicktype
+
+        2. Integrasi Django-Flutter 
+            - Tambahkan authentication app di Django
+            - Install django-cors-headers
+            - Setup CORS dan cookie settings
+            - Buat views login, register, logout
+            - Tambahkan URL routing
+
+        3. Implementasi Login di Flutter 
+            - Install package provider & pbp_django_auth
+            - Buat halaman login.dart
+            - Implementasi form dan sistem autentikasi
+            - Setup CookieRequest dengan Provider
+
+        4. Fetch dan Tampilkan Data 
+            - Install package http
+            - Setup permission Internet
+            - Buat list_product.dart untuk tampilan data
+            - Implementasi FutureBuilder untuk fetch data
+            - Tambahkan ke drawer dan navigasi
+
+        5. Integrasi Form 
+            - Buat view create_product di Django
+            - Tambahkan fungsi POST di Flutter
+            - Hubungkan form dengan CookieRequest
+            - Implementasi handling response
+    ```
+
+
+
+
+
+

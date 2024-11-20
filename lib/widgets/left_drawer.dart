@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:konohapedia_mobile/screens/menu.dart';
-// TODO: Impor halaman MoodEntryFormPage jika sudah dibuat
 import 'package:konohapedia_mobile/screens/productentry_form.dart';
+import 'package:konohapedia_mobile/screens/list_productentry.dart';
 
 
 class LeftDrawer extends StatelessWidget {
@@ -56,7 +56,7 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.mood),
+            leading: const Icon(Icons.add),
             title: const Text('Tambah Produk'),
             // Bagian redirection ke MoodEntryFormPage
             onTap: () {
@@ -68,6 +68,17 @@ class LeftDrawer extends StatelessWidget {
               MaterialPageRoute(builder: (context) => const ProductEntryFormPage()
               ));
             },
+          ),
+          ListTile(
+              leading: const Icon(Icons.list),
+              title: const Text('Lihat Daftar Produk'),
+              onTap: () {
+                  // Route menu ke halaman mood
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProductEntryPage()),
+                  );
+              },
           ),
         ],
       ),
